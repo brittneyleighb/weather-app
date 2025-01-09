@@ -1,0 +1,9 @@
+# Ignore environment files
+.env
+
+# Ignore log files
+*.log
+
+# Ignore build outputs
+/dist/
+/build/
