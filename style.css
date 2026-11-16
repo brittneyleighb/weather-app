@@ -1,93 +1,158 @@
-*{
+:root {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f8fcff;
+  background: #121a2a;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  min-height: 100vh;
   margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
+  background: radial-gradient(ellipse at 20% 10%, #254358 0%, transparent 50%),
+              radial-gradient(ellipse at 85% 85%, #3b3056 0%, transparent 48%), #121a2a;
 }
-body{
-  background: #222;
-}
-.card{
-  width: 90%;
-  max-width: 470px;
-  background: linear-gradient(135deg, #00feba, #5b548a);
-  color: #ffff;
-  margin: 100px auto 0;
-  border-radius: 20px; /* To round the corners */
-  padding: 40px 35px;
-  text-align: center;
-}
-.search{
-  width 100%;
-  display: flex;
+.layout {
+  display: grid;
   align-items: center;
-  justify-content: space-between;
-
+  justify-items: center;
+  min-height: 100vh;
+  padding: 26px 16px;
 }
-.search input{
-  border: 0;
-  outline: 0;
-  background: #ebfffc
-  color: #555;
-  padding: 10px 25px;
-  height: 60px;
-  border-radius: 30px;
+.card {
+  width: min(100%, 590px);
+  padding: clamp(24px, 5vw, 44px);
+  border: 1px solid #ffffff2e;
+  border-radius: 26px;
+  background: linear-gradient(155deg, #21374d 0%, #2a3356 63%, #34305a 100%);
+  box-shadow: 0 26px 75px #060f22a6;
+}
+.eyebrow {
+  margin: 0 0 12px;
+  color: #b9e5da;
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: .025em;
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 2.65rem);
+  line-height: 1.1;
+  letter-spacing: -.04em;
+  margin: 0 0 12px;
+}
+.intro {
+  color: #dae4ef;
+  line-height: 1.55;
+  margin: 0 0 28px;
+}
+.search label {
+  display: block;
+  font-weight: 650;
+  font-size: .94rem;
+  margin-bottom: 10px;
+}
+.search-row {
+  display: flex;
+  gap: 10px;
+}
+.search input {
+  min-width: 0;
   flex: 1;
-  margin-right: 16px;
-  font-size: 18px;
+  padding: 14px 15px;
+  color: #15202c;
+  background: #f4fafb;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 1rem;
 }
-.search button{
+.search input::placeholder { color: #5a6775; }
+button {
+  flex-shrink: 0;
   border: 0;
-  outline: 0;
-  background: #ebfffc;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  border-radius: 12px;
+  background: #b9f1de;
+  color: #10273c;
+  font: inherit;
+  font-weight: 750;
+  padding: 14px 18px;
   cursor: pointer;
+  transition: background .16s ease, transform .16s ease;
 }
-.search button img{
-  width: 16px;
+button:hover:not(:disabled) { background: #d0f8e9; transform: translateY(-1px); }
+button:disabled { opacity: .66; cursor: progress; }
+:focus-visible { outline: 3px solid #ffd995; outline-offset: 3px; }
+.search-hint {
+  margin: 10px 0 0;
+  font-size: .82rem;
+  color: #c5d2e2;
 }
-.weather-icon{
-  width: 170px;
-  margin-top: 30px;
+.message {
+  margin: 20px 0 0;
+  padding: 13px 15px;
+  border-radius: 12px;
+  background: #ffffff16;
+  color: #f8fbff;
+  line-height: 1.5;
 }
-.weather h1{
-  font-size: 80px;
-  font-weight: 500;
+.message[data-kind="error"] {
+  border: 1px solid #ffd3b2;
+  background: #7e3c39a3;
 }
-.weather h2{
-  font-size: 45px;
-  font-weight: 400;
-  margin-top: -10px;
+.weather {
+  margin-top: 28px;
+  padding-top: 26px;
+  border-top: 1px solid #ffffff30;
 }
-.details{ /* This is where we spaced out Humidity and Wind Speed */
+.weather-main {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  margin-top: 50px;
+  gap: 20px;
+  align-items: flex-start;
 }
-.col{ /* Re-sizing the Humidity and Wind Speed icons */
-  display: flex;
-  align-items: center;
-  text-align: left;
+h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  letter-spacing: -.025em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
-.col img{
-  width: 40px;
-  margin-right: 10px;
+.weather-icon { font-size: clamp(3.8rem, 12vw, 6.5rem); line-height: 1; flex-shrink: 0; }
+.condition { margin: 12px 0 0; font-size: 1.1rem; }
+.observation { margin: 8px 0 0; color: #cfdeec; font-size: .81rem; }
+.temperature {
+  margin: 8px 0 24px;
+  font-size: clamp(4.3rem, 17vw, 7rem);
+  line-height: 1;
+  font-weight: 720;
+  letter-spacing: -.075em;
 }
-.humidity, .wind{
-  font-size: 28px;
-  margin-top: -6px;
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
 }
-.weather{
-  display: none;
+.metric {
+  padding: 19px 18px;
+  background: #ffffff12;
+  border: 1px solid #ffffff26;
+  border-radius: 16px;
 }
-.error{
-  text-align: left;
-  margin-left: 10px;
-  font-size: 14px;
-  margin-top: 10px;
-  display: none; /* Hides the error message on the main screen */
+.metric-label { margin: 0 0 7px; color: #d2e5f0; font-size: .83rem; }
+.metric-value { margin: 0; font-size: clamp(1.25rem, 4vw, 1.7rem); font-weight: 700; }
+footer {
+  margin-top: 32px;
+  color: #cfdeec;
+  font-size: .77rem;
+  line-height: 1.6;
+}
+footer a { color: #c0f4e3; text-underline-offset: 2px; }
+@media (max-width: 420px) {
+  .search-row { flex-direction: column; }
+  .search-row button { width: 100%; }
+  .weather-main { gap: 8px; }
+  .metric { padding: 15px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  button { transition: none; }
 }
