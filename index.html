@@ -1,98 +1,65 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Search for a city and see current modeled weather conditions.">
+  <meta name="color-scheme" content="dark">
+  <title>City Weather | Weather App</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./weather-app.js"></script>
 </head>
 <body>
+  <main class="layout">
+    <section class="card" aria-labelledby="page-title">
+      <header>
+        <p class="eyebrow">Weather, wherever you are</p>
+        <h1 id="page-title">What's the sky doing?</h1>
+        <p class="intro">Look up current modeled conditions in a city around the world.</p>
+      </header>
 
-<div class="card">
-    <div class="search">
-      <input type="text" placeholder="Enter city name" spellcheck="false">
-        <button><img src="images/search.png"></button>
-    </div>
-    <div class="error">
-      <p>Invalid city name</p>
-    </div>
-    <div class="weather">
-      <img src="images/rain.png" class="weather-icon">
-      <h1 class="temp">22°C</h1>
-      <h2 class="city">New York</h2>
-      <div class="details">
-        <div class="col">
-          <img src="images/humidity.png">
+      <form class="search" id="weather-search" aria-busy="false">
+        <label for="city-input">City or town</label>
+        <div class="search-row">
+          <input id="city-input" name="city" type="search" inputmode="search"
+                 autocomplete="address-level2" placeholder="Try Querétaro, Mexico"
+                 minlength="2" maxlength="120" required>
+          <button id="search-button" type="submit">See weather</button>
+        </div>
+        <p class="search-hint">For similar city names, include a state or country.</p>
+      </form>
+
+      <p class="message" id="message" role="status" aria-live="polite" hidden></p>
+
+      <section class="weather" id="weather" aria-labelledby="city-name" hidden>
+        <div class="weather-main">
           <div>
-            <p class="humidity">50%</p>
-            <p>Humidity</p>
+            <p class="eyebrow">Current conditions</p>
+            <h2 id="city-name"></h2>
+            <p class="condition" id="condition"></p>
+            <p class="observation" id="observation-time"></p>
+          </div>
+          <span class="weather-icon" id="condition-icon" role="img" aria-label="Weather conditions"></span>
+        </div>
+        <p class="temperature" id="temperature"></p>
+        <div class="details">
+          <div class="metric">
+            <p class="metric-label">Humidity</p>
+            <p class="metric-value" id="humidity"></p>
+          </div>
+          <div class="metric">
+            <p class="metric-label">Wind speed</p>
+            <p class="metric-value" id="wind"></p>
           </div>
         </div>
-        <div class="col">
-          <img src="images/wind.png">
-          <div>
-            <p class="wind">15 km/h</p>
-            <p>Wind Speed</p>
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
+      </section>
 
-<script>
-
-const apiKey = "";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-
-const searchBox = document.querySelector(".search input");
-const searchBtn = document.querySelector(".search button");
-const weatherIcon = document.querySelector(".weather-icon");
-
-async function checkWeather(city){
-  const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
-
-  if(response.status == 404){
-    document.querySelector(".error").style.display = "block";
-    document.querySelector(".weather").style.display = "none";
-  }else{
-    const data = await response.json();
-
-    document.querySelector(".city").innerHTML = data.name;
-    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
-    document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-    document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
-
-    if(data.weather[0].main == "Clouds"){
-      weatherIcon.src = "images/clouds.png";
-    }
-    else if (data.weather[0].main == "Clear"){
-      weatherIcon.src = "images/clear.png";
-    }
-    else if(data.weather[0].main == "Rain"){
-      weatherIcon.src = "images/rain.png";
-    }
-    else if(data.weather[0].main == "Drizzle"){
-      weatherIcon.src = "images/drizzle.png";
-    }
-    else if(data.weather[0].main == "Mist"){
-      weatherIcon.src = "images/mist.png";
-    }
-
-    document.querySelector(".weather").style.display = "block";
-    document.querySelector(".error").style.display = "none";
-  }
-
-}
-
-searchBtn.addEventListener("click", () => {
-  if (searchBox.value.trim() === "") {
-    document.querySelector(".error").style.display = "block";
-    document.querySelector(".weather").style.display = "none";
-    return;
-  }
-  checkWeather(searchBox.value.trim()); // Add parentheses to `trim()`
-});
-
-</script>
-
+      <footer>
+        Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>
+        · Location data by <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer">GeoNames</a>
+      </footer>
+    </section>
+  </main>
+  <noscript>Enable JavaScript to search for weather conditions.</noscript>
 </body>
 </html>
