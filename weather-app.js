@@ -62,27 +62,31 @@ function displayWeather(location, weather) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const query = cityInput.value.trim();
+  activeController?.abort();
+  activeController = null;
+  const thisRequest = ++requestVersion;
   if (query.length < 2) {
+    setBusy(false);
     showMessage("Enter a city name with at least two characters.", true);
     cityInput.focus();
     return;
   }
 
-  activeController?.abort();
-  activeController = new AbortController();
-  const thisRequest = ++requestVersion;
+  const controller = new AbortController();
+  activeController = controller;
   setBusy(true);
   weatherPanel.hidden = true;
   showMessage("Looking up " + query + "…");
 
   try {
-    const geo = await getJson(buildGeocodingUrl(query), activeController.signal);
+    const geo = await getJson(buildGeocodingUrl(query), controller.signal);
+    if (thisRequest !== requestVersion) return;
     const match = Array.isArray(geo.results) ? geo.results[0] : undefined;
     if (!match) {
       throw new Error("No matching city found. Try adding a country or state.");
     }
 
-    const data = await getJson(buildForecastUrl(match), activeController.signal);
+    const data = await getJson(buildForecastUrl(match), controller.signal);
     const current = parseCurrentWeather(data);
     if (thisRequest !== requestVersion) return;
 
